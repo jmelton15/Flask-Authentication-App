@@ -1,0 +1,16 @@
+{% extends "base_form_page.html" %}
+{% block form_title %} Login {% endblock %}
+
+{% block header %}
+    <h1 class="fw-bolder display-2">Login Below</h1>
+{% endblock %}
+{% block form_button %}
+<div class="container d-flex align-items-center">
+    <button class="btn btn-primary me-3">Login</button>
+    <div class="d-flex flex-column">
+        <small><a class="float-end" href="/password/forgot">Forgot Password</a></small>
+        <small>Don't Have An Account Yet?-<a href="/register"> Register Here!</a></small>
+    </div>
+</div>
+
+{% endblock %}

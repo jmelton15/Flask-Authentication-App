@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        {% block title %}  {% endblock %}
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/static/bootstrap-5.0.0-beta1-dist/css/bootstrap.min.css">
+        {% block stylesheets %} 
+        {% endblock %}
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/feedback">Flask-Authentication</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/feedback">Feedback</a>
+                      </li>
+                      {% if 'username' in session %}
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/users/{{session['username']}}">My Account</a>
+                      </li>
+                      {% endif %}
+                    </ul>
+                      <ul class="navbar-nav">
+                        {% if 'username' in session %}
+                        <li class="nav-item">
+                          <a class="nav-link active float-end" aria-current="page" href="/logout">Logout</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" href="/login">Login/Sign-Up</a>
+                        </li>
+                        {% endif %}
+                      </ul>
+                </div>
+              </div>
+            </nav>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category,message in messages %}
+                <div class="container">
+                  <h4 class="alert {{category}} text-center">{{message}}</h4>
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+        {% block content %}
+
+        {% endblock %}
+
+        <script src="/static/bootstrap-5.0.0-beta1-dist/js/bootstrap.min.js"></script>
+        {% block scripts %}
+        {% endblock %}
+    </body>
+</html>

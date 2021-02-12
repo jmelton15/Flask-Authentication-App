@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block form_title %} My Account {% endblock %}
+
+{% block content %}
+<div class="container d-flex flex-column justify-content-center align-items-center">
+    <h1 class="display-2">{{user.username}}
+        <form class="d-inline-flex" method="POST" action="/users/{{user.username}}/delete" name="delete-account-form">
+            <small><button class="btn btn-sm btn-outline-dark" name="del-account" value="delete-account">Delete Account</button></small>
+        </form>
+    </h1>
+{% if user.feedbacks %}
+    <a class="btn btn-outline-success btn-sm mb-3" href="/users/{{user.username}}/feedback/add">New Feedback</a>
+{% endif %}
+</div>
+{% if user.feedbacks %}
+    <div class="container d-flex justify-content-center align-items-center">
+        {% for fb in user.feedbacks %}
+        <form method="POST" action="/users/{{user.username}}/feedback/delete" name="acctpage-fb-del-form">
+            <div class="card mx-2">
+                <h5 class="card-header">{{fb.title}}</h5>
+                <div class="card-body pb-1">
+                    <blockquote class="blockquote mb-0">
+                        <p>{{fb.content}}</p>
+                        <footer class="blockquote-footer">Feedback By 
+                            <cite title="Source Title"><a href="/users/{{fb.users.username}}">{{fb.users.username}}</a></cite>
+                        </footer>
+                    </blockquote>
+                    <div class="mt-3">
+                        <button class="btn btn-danger btn-sm" name="del-fb-btn" value="{{fb.id}}">Delete</button>
+                        <a class="float-end text-success" href="/feedback/{{fb.id}}/update">Update Feedback</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+        {% endfor %}
+    </div>
+{% else %}
+<div class="container d-flex flex-column justify-content-center align-items-center">
+    <p>Looks Like You Haven't Given Any Feedback Yet, <a href="/users/{{user.username}}/feedback/add">Add Some Now</a></p>
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+

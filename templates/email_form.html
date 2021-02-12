@@ -1,0 +1,12 @@
+{% extends "base_form_page.html" %}
+{% block form_title %} Password Reset {% endblock %}
+
+{% block header %}
+<h1 class="fw-bolder display-2">Password Reset</h1>
+{% endblock %}
+{% block form_button %}
+<div class="container d-flex align-items-center">
+    <button class="btn btn-primary me-3">Send Email Code</button>
+    <a class="btn btn-outline-success btn-sm" href="/users/{{session['username']}}">Cancel</a>
+</div>
+{% endblock %}

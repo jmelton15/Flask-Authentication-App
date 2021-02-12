@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block form_title %} {% endblock %}
+{% block content %}
+<div class="container d-flex flex-column justify-content-center align-items-center">
+{% block header %}
+
+{% endblock %}
+    <form id="login-signup-forms" method="POST">
+        {{ form.hidden_tag() }}  <!-- add type=hidden form fields -->
+        <div class="mb-3 d-flex justify-content-center flex-column align-items-start">
+        {% for field in form if field.widget.input_type != 'hidden' %}
+            {{field.label(class_="form-label fw-bolder")}}
+            {{field(class="form-control")}}
+            {% for error in field.errors %}
+            <small class="text-danger">
+                {{error}}
+            </small>
+            {% endfor %}
+        {% endfor %}
+        </div>
+        {% block form_button %}
+
+        {% endblock %}
+    </form>
+</div>
+{% endblock %}
