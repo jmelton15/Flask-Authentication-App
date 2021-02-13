@@ -37,6 +37,11 @@ connect_db(app)
 db.create_all()
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    flash('The Path or Route You Tried Accessing Is Not Valid',"alert-danger")
+    flash('If You Have Not Created An Account Yet, Please Do So Here','alert-primary')
+    return redirect("/register")
 
 @app.route('/')
 def register_redirect():
