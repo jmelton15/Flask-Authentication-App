@@ -4,7 +4,6 @@ from sqlalchemy.exc import IntegrityError
 from models import db, connect_db,User,Feedback
 
 
-
 def delete_user(token):
     """ Function that handles deleting a user based on token authorization
     """
@@ -13,14 +12,12 @@ def delete_user(token):
     User.query.filter_by(username=token).delete()    
     db.session.commit()
     session.pop("username")
-    return True
 
 def delete_feedback(token):
     """ Function that handles deleting a feedback based on token authorization
     """
     Feedback.query.filter_by(id=token).delete()
     db.session.commit()
-    return True
 
 def check_session_status(username):
     """Function that checks the status of a user.

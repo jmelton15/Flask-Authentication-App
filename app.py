@@ -158,11 +158,14 @@ def delete_user(username):
         message = common_flashes(check_session_status(username)[0])
         flash(message[0],message[1])
         return redirect(check_session_status(username)[1])
-    if delete_user(username):
+    else:
+        Feedback.query.filter(Feedback.username == username).delete()
+        db.session.commit()
+        User.query.filter_by(username=username).delete()    
+        db.session.commit()
+        session.pop("username")
         flash("Sorry To See You Leave, We Welcome You Back Anytime!", "alert-warning")
         return redirect("/register")
-    else:
-        return redirect(f"/users/{session['username']}")
 
 @app.route("/users/<username>/feedback/delete",methods=["POST"])
 def delete_users_feedback(username):
@@ -172,11 +175,13 @@ def delete_users_feedback(username):
         message = common_flashes(check_session_status(username)[0])
         flash(message[0],message[1])
         return redirect(check_session_status(username)[1])
-    fb_id = request.form["del-fb-btn"]
-    if delete_feedback(fb_id):
+    else:
+        fb_id = request.form["del-fb-btn"]
+        Feedback.query.filter_by(id=fb_id).delete()
+        db.session.commit()
         message = common_flashes("fb_deleted")
         flash(message[0],message[1])
-    return redirect(f"/users/{session['username']}")
+        return redirect(f"/users/{session['username']}")
 
 @app.route("/users/<username>/feedback/add",methods=["GET","POST"])
 def show_add_feedback_page(username):
@@ -237,10 +242,12 @@ def delete_feedback(feedback_id):
         message = common_flashes(check_session_status(username)[0])
         flash(message[0],message[1])
         return redirect(check_session_status(username)[1])
-    if delete_feedback(feedback_id):
+    else:   
+        Feedback.query.filter_by(id=feedback_id).delete()
+        db.session.commit()
         message = common_flashes("fb_deleted")
         flash(message[0],message[1])
-    return redirect("/feedback")
+        return redirect("/feedback")
         
 
 
