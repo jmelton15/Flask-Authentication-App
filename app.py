@@ -31,6 +31,8 @@ mail = Mail(app)
 connect_db(app)
 # db.create_all()
 
+url = os.environ.get('URL','http://127.0.0.1:5000/password?reset=')
+
 @app.route('/')
 def register_redirect():
     """HomePage Redirects to the register page
