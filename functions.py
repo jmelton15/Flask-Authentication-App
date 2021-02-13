@@ -73,3 +73,10 @@ def verify_token(token):
         return user
     else:
         return False
+    
+def erase_pass_token(user):
+    """ erases password reset token on users account
+    """
+    user.reset_token = None 
+    db.session.commit()
+    
