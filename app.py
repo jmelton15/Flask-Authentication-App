@@ -9,7 +9,7 @@ from sqlalchemy import desc
 from models import db, connect_db,User,Feedback
 from forms import LoginForm,SignUpForm,FeedbackForm,EmailConfirmationForm, PasswordResetForm
 from flask_bcrypt import Bcrypt
-from functions import check_session_status,common_flashes,delete_feedback,delete_user,verify_email,verify_token
+from functions import check_session_status,common_flashes,delete_feedback,delete_user,verify_email,verify_token,erase_pass_token
 
 app = Flask(__name__)
 
@@ -20,10 +20,13 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY',"SUPERSECRETKEY")
 
 app.config['MAIL_SERVER'] = os.environ.get('MAIL_USERNAME','smtp.gmail.com')
 app.config['MAIL_PORT'] = os.environ.get('MAIL_PORT',587)
+# app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME',secret_keys["mail_server"][0])
+# app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD',secret_keys["mail_server"][1])
 app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS', True)
 app.config['MAIL_USE_SSL'] = os.environ.get('MAIL_USE_SSL', False)
+# app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME',secret_keys["mail_server"][0])
 app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_SUPPRESS_SEND'] = os.environ.get('MAIL_SUPPRESS_SEND')
 app.config['MAIL_DEBUG'] = True
@@ -32,7 +35,7 @@ app.config['MAIL_DEBUG'] = True
 mail = Mail(app)
 
 connect_db(app)
-# db.create_all()
+db.create_all()
 
 
 
@@ -54,15 +57,14 @@ def send_password_reset():
         user = verify_email(email)
         if user:
             token = secrets.token_urlsafe(32)
-            url = os.environ.get('URL') + token
+            url = os.environ.get('URL','http://127.0.0.1:5000/password?reset=') + token
             body = f"""Hello, This Is The Password Reset Code You Asked For. 
                 Type this into the confirmation box on the page to verify and reset your password\n 
                 {url}"""
             subject = "Password Reset Confirmation Code" 
             msg = Message(recipients=[email],body=body,subject=subject)
             mail.send(msg)
-            user.reset_token = token # store the token temporarily so we can verfiy the user
-            db.session.commit()
+            erase_pass_token(user)
             flash("Code Has Been Sent and Should Be In Your Email Shortly","alert-success")
             return redirect("/password/forgot")
         else:
@@ -124,6 +126,7 @@ def show_login_page():
             
         user = User.authenticate(username,pwd)
         if user:
+            erase_pass_token(user)
             session["username"] = user.username
             flash(f"Welcome back, {user.username}!","alert-primary")
             return redirect(f"/users/{user.username}")
