@@ -51,12 +51,12 @@ def send_password_reset():
         user = verify_email(email)
         if user:
             token = secrets.token_urlsafe(32)
-            url = 'http://127.0.0.1:5000/password?reset=' + token
+            mail_url = url + token
             user.reset_token = token # store the token temporarily so we can verfiy the user
             db.session.commit()
             body = f"""Hello, This Is The Password Reset Code You Asked For. 
                 Type this into the confirmation box on the page to verify and reset your password\n 
-                {url}"""
+                {mail_url}"""
             subject = "Password Reset Confirmation Code" 
             msg = Message(recipients=[email],body=body,subject=subject)
             mail.send(msg)
