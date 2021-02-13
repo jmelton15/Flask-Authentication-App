@@ -62,7 +62,8 @@ def send_password_reset():
             mail.send(msg)
             user.reset_token = token # store the token temporarily so we can verfiy the user
             db.session.commit()
-            return redirect("/login")
+            flash("Code Has Been Sent and Should Be In Your Email Shortly","alert-success")
+            return redirect("/password/forgot")
         else:
             message = common_flashes("missing_user")
             flash(message[0],message[1])
