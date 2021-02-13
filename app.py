@@ -9,7 +9,6 @@ from sqlalchemy import desc
 from models import db, connect_db,User,Feedback
 from forms import LoginForm,SignUpForm,FeedbackForm,EmailConfirmationForm, PasswordResetForm
 from flask_bcrypt import Bcrypt
-import pyautogui
 from functions import check_session_status,common_flashes,delete_feedback,delete_user,verify_email,verify_token
 
 app = Flask(__name__)

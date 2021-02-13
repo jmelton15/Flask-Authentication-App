@@ -2,32 +2,25 @@ from flask import Flask, request,render_template,redirect,flash,session,flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 from models import db, connect_db,User,Feedback
-import pyautogui
 
 
 
 def delete_user(token):
     """ Function that handles deleting a user based on token authorization
     """
-    if pyautogui.confirm("Are You Sure You Want To Delete Your Account?",buttons=['Yes','No']) == "Yes":
-        Feedback.query.filter(Feedback.username == token).delete()
-        db.session.commit()
-        User.query.filter_by(username=token).delete()    
-        db.session.commit()
-        session.pop("username")
-        return True
-    else:
-        return False
+    Feedback.query.filter(Feedback.username == token).delete()
+    db.session.commit()
+    User.query.filter_by(username=token).delete()    
+    db.session.commit()
+    session.pop("username")
+    return True
 
 def delete_feedback(token):
     """ Function that handles deleting a feedback based on token authorization
     """
-    if pyautogui.confirm("Are You Sure You Want To Delete This Feedback?",buttons=['Yes','No']) == "Yes":
-        Feedback.query.filter_by(id=token).delete()
-        db.session.commit()
-        return True
-    else:
-        return False
+    Feedback.query.filter_by(id=token).delete()
+    db.session.commit()
+    return True
 
 def check_session_status(username):
     """Function that checks the status of a user.
