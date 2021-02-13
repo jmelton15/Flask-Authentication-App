@@ -1,4 +1,4 @@
-from config import secret_keys
+# from config import secret_keys
 import os
 from flask import Flask, request,render_template,redirect,flash,session,flash
 from flask_mail import Mail, Message
@@ -17,7 +17,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL','postgresql:///authenticate')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY',secret_keys['secret_key'])
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY',"SUPERSECRETKEY")
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
