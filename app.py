@@ -64,7 +64,8 @@ def send_password_reset():
             subject = "Password Reset Confirmation Code" 
             msg = Message(recipients=[email],body=body,subject=subject)
             mail.send(msg)
-            erase_pass_token(user)
+            user.reset_token = token
+            db.session.commit()
             flash("Code Has Been Sent and Should Be In Your Email Shortly","alert-success")
             return redirect("/password/forgot")
         else:
@@ -84,8 +85,7 @@ def verify_and_show_reset():
             User.reset_password(new_pass,user)
             message = common_flashes("password_reset")
             flash(message[0],message[1])
-            user.reset_token = None # we want to erase the token from the database once this is done
-            db.session.commit()
+            erase_pass_token(user)
             return redirect("/login")
         return render_template("password_reset_page.html",form=form)
     
