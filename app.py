@@ -1,4 +1,4 @@
-# from config import secret_keys
+from config import secret_keys
 import os
 from flask import Flask, request,render_template,redirect,flash,session,flash
 from flask_mail import Mail, Message
@@ -20,14 +20,14 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY',"SUPERSECRETKEY")
 
 app.config['MAIL_SERVER'] = os.environ.get('MAIL_USERNAME','smtp.gmail.com')
 app.config['MAIL_PORT'] = os.environ.get('MAIL_PORT',587)
-# app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME',secret_keys["mail_server"][0])
-# app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD',secret_keys["mail_server"][1])
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME',secret_keys["mail_server"][0])
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD',secret_keys["mail_server"][1])
+# app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+# app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS', True)
 app.config['MAIL_USE_SSL'] = os.environ.get('MAIL_USE_SSL', False)
-# app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME',secret_keys["mail_server"][0])
-app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME',secret_keys["mail_server"][0])
+# app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_SUPPRESS_SEND'] = os.environ.get('MAIL_SUPPRESS_SEND')
 app.config['MAIL_DEBUG'] = True
 
