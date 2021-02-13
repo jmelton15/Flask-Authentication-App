@@ -61,7 +61,7 @@ class EmailConfirmationForm(FlaskForm):
         """ Custom validation function that makes sure the two emails
             entered are the same
         """
-        if field.data != self.email.data:
+        if field.data.lower() != self.email.data.lower():
             raise ValidationError("Emails Don't Match")
 
 class PasswordResetForm(FlaskForm):

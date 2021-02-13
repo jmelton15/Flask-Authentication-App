@@ -31,7 +31,7 @@ mail = Mail(app)
 connect_db(app)
 # db.create_all()
 
-url = os.environ.get('URL','http://127.0.0.1:5000/password?reset=')
+
 
 @app.route('/')
 def register_redirect():
@@ -51,15 +51,15 @@ def send_password_reset():
         user = verify_email(email)
         if user:
             token = secrets.token_urlsafe(32)
-            mail_url = url + token
-            user.reset_token = token # store the token temporarily so we can verfiy the user
-            db.session.commit()
+            url = os.environ.get('URL') + token
             body = f"""Hello, This Is The Password Reset Code You Asked For. 
                 Type this into the confirmation box on the page to verify and reset your password\n 
-                {mail_url}"""
+                {url}"""
             subject = "Password Reset Confirmation Code" 
             msg = Message(recipients=[email],body=body,subject=subject)
             mail.send(msg)
+            user.reset_token = token # store the token temporarily so we can verfiy the user
+            db.session.commit()
             return redirect("/login")
         else:
             message = common_flashes("missing_user")
