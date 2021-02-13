@@ -25,6 +25,8 @@ app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS', True)
 app.config['MAIL_USE_SSL'] = os.environ.get('MAIL_USE_SSL', False)
 app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_SUPPRESS_SEND'] = os.environ.get('MAIL_SUPPRESS_SEND')
+app.config['MAIL_DEBUG'] = os.environ.get('MAIL_DEBUG')
 
 mail = Mail(app)
 
